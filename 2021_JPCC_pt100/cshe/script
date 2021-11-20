@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+#BSUB -q large
+#BSUB -W 24:00
+#BSUB -J cp2k-data
+#BSUB -o cp2k.%J.stdout
+#BSUB -e cp2k.%J.stderr
+#BSUB -n 84 
+#BSUB -R "span[ptile=28]"
+
+# add modulefiles
+module load intel/15.0.6 mpi/intel/5.0.3.049
+module load cp2k/4.1
+
+NAME=pt
+
+i=10000
+while [ $i -le 34350 ]
+do
+
+cat ./inp1 ./extraction/coords.$i ./inp2 > inp.$i
+
+mpiexec.hydra cp2k.popt inp.$i > out.$i
+
+#cp $NAME-k1-1_0.pdos  pdos-k1-$i.cube
+#cp $NAME-k2-1_0.pdos  pdos-k2-$i.cube
+#cp $NAME-k3-1_0.pdos  pdos-k3-$i.cube
+#cp $NAME-k4-1_0.pdos  pdos-k4-$i.cube
+#cp $NAME-k5-1_0.pdos  pdos-k5-$i.cube
+#cp $NAME-k6-1_0.pdos  pdos-k6-$i.cube
+#cp $NAME-k7-1_0.pdos  pdos-k7-$i.cube
+#cp $NAME-k8-1_0.pdos  pdos-k8-$i.cube
+
+cp $NAME-v_hartree-1_0.cube  pot-$i.cube
+
+i=$((i+50))
+
+done 
