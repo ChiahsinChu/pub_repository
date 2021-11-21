@@ -1,6 +1,6 @@
 .gitignore
 .history
 update.sh
-./2021_JPCC_pt100/md_traj
-./2021_JPCC_pt100/plot
-./2021_JPCC_pt100/manuscript
+2021_JPCC_pt100/md_traj
+2021_JPCC_pt100/plot
+2021_JPCC_pt100/manuscript
