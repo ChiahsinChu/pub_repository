@@ -117,13 +117,13 @@ codes used for data in Figure 7
 
 `cd $dir/plot`
 
+(only available group-internally)
+
 ### AIMD trajectory
 
 `cd $dir/md_traj`
 
-- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool]() for saving memory)
-
-If you want to use these trajectories for further analysis, 
+- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool]() for saving memory; only available group-internally)
 
 ### Manuscript
 

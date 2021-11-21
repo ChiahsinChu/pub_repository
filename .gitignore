@@ -1,2 +1,6 @@
+.gitignore
 .history
-update.sh
+./update.sh
+./md_traj
+./plot
+./manuscript
