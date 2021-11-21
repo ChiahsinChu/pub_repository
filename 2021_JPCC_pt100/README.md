@@ -29,7 +29,7 @@ dir=$(pwd)
 ```
 > **NOTE** 
 > - There might be some alternative (and possibly simpler) methods for calculations and analysis, which are shown in `*/alternative` in the working directories `*/`.
-> - Most of the codes here are written in fortran and *ad hoc*. Some of them are reconstructed in python modules for higher transferability, which can be found in [GitHub]().
+> - Most of the codes here are written in fortran and *ad hoc*. Some of them are reconstructed in python modules for higher transferability, which can be found in [GitHub](https://github.com/ChiahsinChu/pub_repository/tree/master/2021_JPCC_pt100).
 
 ### Shared files for QM calculation
 
@@ -77,7 +77,7 @@ dir=$(pwd)
 
 ### Interfacial potential difference
 
-This is a test.
+TBC
 
 ### Post analysis
 
@@ -117,13 +117,13 @@ codes used for data in Figure 7
 
 `cd $dir/plot`
 
+(only available group-internally)
+
 ### AIMD trajectory
 
 `cd $dir/md_traj`
 
-- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool]() for saving memory)
-
-If you want to use these trajectories for further analysis, 
+- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool]() for saving memory; only available group-internally)
 
 ### Manuscript
 
