@@ -117,9 +117,11 @@ codes used for data in Figure 7
 
 `cd $dir/plot`
 
-(only available group-internally)
+- `plot.ipynb`: jupyter notebook (version of the notebook server is 4.2.2 and is running on: Python 2.7.8)
 
 ### AIMD trajectory
+
+> Only Available Group-Internally
 
 `cd $dir/md_traj`
 
@@ -127,9 +129,16 @@ codes used for data in Figure 7
 
 ### Manuscript
 
-Last tex and pdf version of the manuscript, figures in pdf, bibliography (bib) (only available group-internally)
+> Only Available Group-Internally
 
-Last tex and pdf version of the supplementary material, bibliography (bib) and pdf (only available group-internally)
+`cd $dir/manuscript`
+
+- `main.tex`: last tex version of the manuscript
+- `main.pdf`: last pdf version of the manuscript
+- `si.tex`: last tex version of the supplementary information
+- `si.pdf`: last pdf version of the supplementary information
+- `achemso-demo.bib`: bibliography (bib) for `main.tex` and `si.tex`
+- `*.pdf` other than `main.pdf` and `si.pdf`: figures in pdf
 
 
 ** Folder pseudopotentials
@@ -178,6 +187,3 @@ H_myPPs_V01.casinoTab -> 01-H.GGA_JM.pspconvert.fhi.casinoTab (i.e. same as H_jo
 - analysis_04.ipynb: jupyter notebook (version of the notebook server is 4.2.2 and is running on: Python 2.7.8)
 - *.py files: contain methods needed by analysis_04.ipynb
  
- 
-** Folder sourceCodeChanges:
-changes to the source code needed in pwscf from quantum espresso and in casino (only available group-internally)
