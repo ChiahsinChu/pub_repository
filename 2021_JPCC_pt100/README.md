@@ -1,5 +1,5 @@
 # README
-
+test
 ## DOI
 
 10.1021/acs.jpcc.1c04895
@@ -10,11 +10,12 @@ Effects of Adsorbed OH on Pt(100)/Water Interfacial Structures and Potential
  
 ## Authors
 
-Jia-Xin Zhu, Jia-Bo Le, Marc T.M. Koper, Katharina Doblhoff-Dier$^*$, Jun Cheng$^*$
+Jia-Xin Zhu, Jia-Bo Le, Marc T.M. Koper, **Katharina Doblhoff-Dier**, **Jun Cheng**
 
 ## Contact e-mail
  
 k.doblhoff-dier@lic.leidenuniv.nl
+
 chengjun@xmu.edu.cn
  
 ## Abstract
@@ -41,16 +42,18 @@ dir=$(pwd)
 
 ### Preliminary tests
 
-**Software: CP2K/**
+**Software: CP2K/4.1**
 
 `cd $dir/test`
 
 - `ener.inp`: cp2k input file for single point energy calculation
 - `geo_opt.inp`: cp2k input file for geometry optimization
 
+If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/dipole correction (`SURFACE_DIPOLE_CORRECTION`) are required, turn on corresponding sections/keywords.
+
 ### Ab initio molecular dynamics (AIMD)
 
-**Software: CP2K/**
+**Software: CP2K/4.1**
 
 `cd $dir/aimd`
 
@@ -58,26 +61,35 @@ dir=$(pwd)
 
 ### Electrode potential v.s. SHE
 
-**Software: CP2K/**
+**Software: CP2K/4.1**
 
 `cd $dir/cshe`
-  
-- `extraction/run.sh`: call `extraction/extract.f90` and generate atomic positions for calculation
-- `extraction/extract.f90`:
-- `extraction/TRAJECTORY`: xyz trajectory file from AIMD for extracting atomic positions 
+
+- `extraction`: extract atomic positions from xyz trajectories
+  - `extraction/run.sh`: call `extraction/extract.f90` and generate atomic positions for calculation
+  - `extraction/extract.f90`: read and write atomic positions per 50 steps
+  - `extraction/TRAJECTORY`: xyz trajectory file from AIMD for extracting atomic positions 
+  - `extraction/coords.*`: output files (atomic positions of single snapshot)
+
 - `inp1` & `inp2`: cp2k input file for single point energy calculation without atomic positions
 - `script`: script to generate input file and save output files iteratively
-> I find a simpler way to compute the Fermi levels and electrostatic potentials of a series of snapshots. See directory `alternative`.
-- `analysis/fermi/run.sh`: bash file to extract Fermi levels from cp2k output files
-- `analysis/potential/run.sh`: bash file to extract Fermi levels from cp2k hartree cube files
-- `analysis/potential/aver.f90`:
-- `analysis/potential/extract.f90`:
-  > I find a simpler way to compute the Fermi levels and electrostatic potentials of a series of snapshots. See directory `alternative`. 
-  
+
+- `analysis`
+  - `analysis/fermi`
+    - `analysis/fermi/run.sh`: bash file to extract Fermi levels from cp2k output files
+  - `analysis/potential`
+    - `analysis/potential/run.sh`: bash file to call `aver.f90` and `extract.f90`, and extract Fermi levels from cp2k hartree cube files
+    - `analysis/potential/aver.f90`: average the cube file in xy direction
+    - `analysis/potential/extract.f90`: average the hartree potential in the middle of the cell
 
 ### Interfacial potential difference
 
-TBC
+`cd $dir/int_pot`
+
+- `extraction`: generate atomic positions based on the `coords.*` in `$dir/cshe/extraction`
+- `top`: snapshots of interfaces in the top
+- `bottom`: snapshots of interfaces in the bottom
+- `top/cubecruncher` and `bottom/cubecruncher`: package from [CP2K](https://www.cp2k.org/tools:cubecruncher) for analysing cube file, run `run.sh` for extracting hartree potentials iteratively and calculating the potential drop (change two NR in line 14 of `run.sh` accordingly)
 
 ### Post analysis
 
@@ -85,23 +97,37 @@ TBC
 
 #### rearrange trajectory
 
-TBC
+`gen_traj`: 
 
-#### water density and orientational dipole
+#### water density, orientational dipole and coverage
 
-codes used for data in Figure 2 (a) and (b)
+`wat_den`: codes used for data in Figure 2 (a) and (b), and Figure 4
 
-#### water orientation
+- `wat_den/run.sh`: call `wat_den/watorient.f90` and generate required data 
+- `wat_den/watorient.f90`: main code to calculate
+- `wat_den/input.watori`: input parameters
+- `wat_den/TRAJECTORY`: xyz trajectory for analysis
 
-codes used for data in Figure 3 
+- `wat_den/o.dat`: 
+- `wat_den/h.dat`: 
+- `wat_den/ori.dat`: 
+- `wat_den/inter.dat`: 
 
-#### water coverage
 
-codes used for data in Figure 4
+- water B orientational dipole in Figure S15
+
+#### water configuration (psi and phi)
+
+`wat_phi` and `wat_psi`: codes used for data in Figure 3 
+
+- `*/run.sh`: call `wat_den/watorient.f90` and generate required data 
+- `*/watorient.f90`: main code to calculate
+- `*/input.watori`: input parameters
+- `*/TRAJECTORY`: xyz trajectory for analysis
 
 #### OH spatial distribution (heatmap)
 
-codes used for data in Figure 5
+codes used for data in Figure 5 and Figure S4
 
 #### OH adsorption site
 
@@ -111,13 +137,24 @@ codes used for data in Figure 6
 
 codes used for data in Figure 7
 
+#### Mulliken charge
 
+codes used for data in Figure S10 and Figure S11
+
+#### OH orientation distribution
+
+Figure S13
+
+#### OH spatial distribution
+
+Figure S14
 
 ### Plots
 
 `cd $dir/plot`
 
-- `plot.ipynb`: jupyter notebook (version of the notebook server is 4.2.2 and is running on: Python 2.7.8)
+- `plot.ipynb`: jupyter notebook (version of the notebook server is 6.2.0 and is running on: Python 3.8.5)
+- `data`: data for plotting
 
 ### AIMD trajectory
 
@@ -135,25 +172,13 @@ codes used for data in Figure 7
 
 - `main.tex`: last tex version of the manuscript
 - `main.pdf`: last pdf version of the manuscript
-- `si.tex`: last tex version of the supplementary information
-- `si.pdf`: last pdf version of the supplementary information
+- `si.tex`: last tex version of the supporting information
+- `si.pdf`: last pdf version of the supporting information
 - `achemso-demo.bib`: bibliography (bib) for `main.tex` and `si.tex`
 - `*.pdf` other than `main.pdf` and `si.pdf`: figures in pdf
 
 
-** Folder pseudopotentials
-Pseudopotentials used (in various different formats if applicable)
-- 01-H.GGA_JM.pspconvert.fhi: hydrogen PP in fhi format 
-- 01-H.GGA_JM.pspconvert.fhi_1s1.UPF: same as above converted to UPF format
-- 01-H.GGA_JM.pspconvert.fhi.casinoTab: same as above converted to the format used in casino 
-- 29-Cu.GGA_MF_s17.pspconvert.fhi: large core Cu PP in fhi format
-- 29-Cu.GGA_MF_s17.pspconvert.fhi.UPF: large core Cu PP converted to UPF format
-- 29-Cu.GGA_MF_s17.pspconvert.fhi.casinoTab: large core Cu PP converted to the format used in casino 
-- Cu.upf: small core Cu PP in upf format
-- Cu.local2.casinoTab: small core Cu PP converted to the format used in casino
- 
- 
-#
+
 ** Folder data_DFT-TestsSmallCoreCuPP:
 Inputs, etc used for Table 1 and 2:
  

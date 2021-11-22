@@ -1,0 +1,5 @@
+water coverage time series
+cov_wata
+cov_watb
+cov_wata_ave
+cov_watb_ave

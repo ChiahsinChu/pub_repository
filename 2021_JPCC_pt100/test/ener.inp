@@ -2,8 +2,8 @@
   METHOD Quickstep
   STRESS_TENSOR ANALYTICAL
   &DFT
-    BASIS_SET_FILE_NAME /data/ch2_304/zhujiaxin/water_box/BASIS_MOLOPT
-    POTENTIAL_FILE_NAME /data/ch2_304/zhujiaxin/GTH_POTENTIALS 
+    BASIS_SET_FILE_NAME basis/BASIS_MOLOPT
+    POTENTIAL_FILE_NAME basis/GTH_POTENTIALS 
 #    CHARGE -1
 #    UKS  T
 #    WFN_RESTART_FILE_NAME ./q-28w-RESTART.wfn
@@ -11,73 +11,60 @@
       CUTOFF 400
 #      NGRIDS 5
     &END MGRID
+#    &KPOINTS
+#      SCHEME MONKHORST-PACK 2 2 1
+#      SYMMETRY on
+#      EPS_GEO 1.0E-8
+#      FULL_GRID on
+#      VERBOSE on
+#      PARALLEL_GROUP_SIZE 0
+#    &END KPOINTS
     &QS
       EPS_DEFAULT 1.0E-13
       EXTRAPOLATION ASPC 
       EXTRAPOLATION_ORDER 2
     &END QS
     &SCF 
-       SCF_GUESS  RESTART 
-       EPS_SCF 1.0E-8 
-       MAX_SCF 500 
-       ADDED_MOS 500 
-       CHOLESKY INVERSE 
-       &SMEAR  ON 
-         METHOD FERMI_DIRAC 
-         ELECTRONIC_TEMPERATURE [K] 300 
-       &END SMEAR 
-       &DIAGONALIZATION 
-          ALGORITHM STANDARD 
-       &END DIAGONALIZATION 
-       &MIXING 
-           METHOD BROYDEN_MIXING 
-           ALPHA   0.3 
-           BETA    1.5 
-           NBROYDEN  12 
-       &END 
-       &PRINT 
-         &RESTART 
-           &EACH 
-               QS_SCF 50 
-           &END 
-           ADD_LAST NUMERIC 
-         &END 
-       &END 
-     &END SCF 
-
-#    &SCF
-#      SCF_GUESS RESTART 
-#      EPS_SCF 3.0E-7
-#      MAX_SCF 50
-#      &OUTER_SCF
-#         EPS_SCF 3.0E-7
-#         MAX_SCF 5 
-#      &END
-#      &OT
-#         MINIMIZER DIIS 
-#         PRECONDITIONER FULL_SINGLE_INVERSE
-#         ENERGY_GAP 0.1
-#      &END
-#    &END SCF
-
+      SCF_GUESS  RESTART 
+      EPS_SCF 3.0E-7
+      MAX_SCF 500 
+      ADDED_MOS 500 
+      CHOLESKY INVERSE 
+      &SMEAR  ON 
+        METHOD FERMI_DIRAC 
+        ELECTRONIC_TEMPERATURE [K] 300 
+      &END SMEAR 
+      &DIAGONALIZATION 
+        ALGORITHM STANDARD 
+      &END DIAGONALIZATION 
+      &MIXING 
+          METHOD BROYDEN_MIXING 
+          ALPHA   0.3 
+          BETA    1.5 
+          NBROYDEN  12 
+      &END 
+      &PRINT 
+        &RESTART 
+          &EACH 
+              QS_SCF 50 
+          &END 
+          ADD_LAST NUMERIC 
+        &END 
+      &END 
+    &END SCF 
     &XC
       &XC_FUNCTIONAL PBE 
       &END XC_FUNCTIONAL
-#      &XC_GRID
-#         XC_SMOOTH_RHO NN50
-#         XC_DERIV NN50_SMOOTH
-#      &END XC_GRID
-       &VDW_POTENTIAL
-         DISPERSION_FUNCTIONAL PAIR_POTENTIAL
-         &PAIR_POTENTIAL
+        &VDW_POTENTIAL
+          DISPERSION_FUNCTIONAL PAIR_POTENTIAL
+          &PAIR_POTENTIAL
             TYPE DFTD3
-            PARAMETER_FILE_NAME /data/ch2_304/zhujiaxin/dftd3.dat
-            CALCULATE_C9_TERM  TRUE
-            REFERENCE_C9_TERM  TRUE
+            PARAMETER_FILE_NAME basis/dftd3.dat
             REFERENCE_FUNCTIONAL PBE
-         &END PAIR_POTENTIAL
-      &END VDW_POTENTIAL
+          &END PAIR_POTENTIAL
+        &END VDW_POTENTIAL
     &END XC
+#    SURFACE_DIPOLE_CORRECTION .TRUE.
     &PRINT
 #      &E_DENSITY_CUBE
 #        ADD_LAST NUMERIC
@@ -93,7 +80,6 @@
 #          GEO_OPT 0
 #        &END EACH
 #      &END PDOS
-
 #      &MO_CUBES
 #        NHOMO -1
 #        NLUMO -1
@@ -104,7 +90,6 @@
 #          GEO_OPT 0
 #        &END EACH
 #      &END MO_CUBES
-
       &V_HARTREE_CUBE ON
          STRIDE 8 8 1
          APPEND T
@@ -119,23 +104,12 @@
 
   &SUBSYS
     &CELL
-#      A  9.611  -5.549   0.000
-#      B  0   11.098  0
-#      C  0   0   21.796
       ABC [angstrom]   11.246 11.246 35.940   
       ALPHA_BETA_GAMMA  90 90 90
     &END CELL
     &COORD
       @include coord.xyz
     &END COORD
-#    &KIND P
-#      BASIS_SET DZVP-MOLOPT-SR-GTH 
-#      POTENTIAL GTH-PBE-q5 
-#    &END KIND
-#    &KIND F
-#      BASIS_SET  DZVP-MOLOPT-SR-GTH
-#      POTENTIAL  GTH-PBE-q7
-#    &END KIND
     &KIND H
       BASIS_SET DZVP-MOLOPT-SR-GTH
       POTENTIAL GTH-PBE-q1
@@ -148,79 +122,13 @@
       BASIS_SET  DZVP-A5-Q10-323-MOL-T1-DERIVED_SET-1
       POTENTIAL  GTH-PBE-q10
     &END KIND
-
   &END SUBSYS
 &END FORCE_EVAL
 
 &GLOBAL
-  PROJECT Pt
+  PROJECT pt
   RUN_TYPE ENERGY
   PRINT_LEVEL medium 
   WALLTIME 345000
 &END GLOBAL
-
-&MOTION
-# &CONSTRAINT
-#    &FIXED_ATOMS
-#      LIST 37..108 
-#    &END FIXED_ATOMS
-# &END CONSTRAINT
-
-  &GEO_OPT
-    TYPE minimization
-    OPTIMIZER BFGS
-    MAX_ITER 200 
-    MAX_FORCE 4.5E-5
-  &END GEO_OPT
-
-#  &MD
-#    &THERMOSTAT
-#      &NOSE
-#        LENGTH 3
-#        YOSHIDA 3
-#        TIMECON 1000.
-#        MTS 2
-#      &END NOSE
-#    &END THERMOSTAT
-#    ENSEMBLE NVE
-#    STEPS 20000000
-#    TIMESTEP 0.5
-#    TEMPERATURE 330.0
-#    TEMP_TOL 50
-#  &END MD
-
-  &PRINT
-   &TRAJECTORY
-     &EACH
-       MD 1
-     &END EACH
-   &END TRAJECTORY
-   &VELOCITIES
-     &EACH
-       MD 1
-     &END EACH
-   &END VELOCITIES
-   &FORCES OFF
-   &END FORCES
-   &RESTART_HISTORY 
-     &EACH
-       MD 1000
-     &END EACH
-   &END RESTART_HISTORY
-   &RESTART
-     BACKUP_COPIES 3
-     &EACH
-       MD 1
-     &END EACH
-   &END RESTART
-   &STRESS
-   &END STRESS
-  &END PRINT
-
-&END MOTION
-
-#&EXT_RESTART
-#   RESTART_FILE_NAME ./Pt-1.restart
-##  RESTART_COUNTERS False
-#&END EXT_RESTART
 
