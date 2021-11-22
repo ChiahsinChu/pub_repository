@@ -1,7 +1,7 @@
 #!/bin/bash --login
 
-i=6000
-while [ $i -le 23000 ]
+i=20000
+while [ $i -le 40000 ]
 do
 
 grep 'Fermi Ener' ../../out.$i > fermi-$i.dat

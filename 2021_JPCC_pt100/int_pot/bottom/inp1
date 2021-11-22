@@ -1,0 +1,81 @@
+&FORCE_EVAL
+  METHOD Quickstep
+  STRESS_TENSOR ANALYTICAL
+  &DFT
+    BASIS_SET_FILE_NAME basis/BASIS_MOLOPT
+    POTENTIAL_FILE_NAME basis/GTH_POTENTIALS 
+#    CHARGE -1
+#    UKS  T
+#    WFN_RESTART_FILE_NAME ./q-28w-RESTART.wfn
+    &MGRID
+      CUTOFF 400
+#      NGRIDS 5
+    &END MGRID
+#    &KPOINTS
+#      SCHEME MONKHORST-PACK 2 2 1
+#      SYMMETRY on
+#      EPS_GEO 1.0E-8
+#      FULL_GRID on
+#      VERBOSE on
+#      PARALLEL_GROUP_SIZE 0
+#    &END KPOINTS
+    &QS
+      EPS_DEFAULT 1.0E-13
+      EXTRAPOLATION ASPC 
+      EXTRAPOLATION_ORDER 2
+    &END QS
+    &SCF 
+      SCF_GUESS  RESTART 
+      EPS_SCF 3.0E-7
+      MAX_SCF 500 
+      ADDED_MOS 500 
+      CHOLESKY INVERSE 
+      &SMEAR  ON 
+        METHOD FERMI_DIRAC 
+        ELECTRONIC_TEMPERATURE [K] 300 
+      &END SMEAR 
+      &DIAGONALIZATION 
+        ALGORITHM STANDARD 
+      &END DIAGONALIZATION 
+      &MIXING 
+          METHOD BROYDEN_MIXING 
+          ALPHA   0.3 
+          BETA    1.5 
+          NBROYDEN  12 
+      &END 
+      &PRINT 
+        &RESTART 
+          &EACH 
+              QS_SCF 50 
+          &END 
+          ADD_LAST NUMERIC 
+        &END 
+      &END 
+    &END SCF 
+    &XC
+      &XC_FUNCTIONAL PBE 
+      &END XC_FUNCTIONAL
+        &VDW_POTENTIAL
+          DISPERSION_FUNCTIONAL PAIR_POTENTIAL
+          &PAIR_POTENTIAL
+            TYPE DFTD3
+            PARAMETER_FILE_NAME basis/dftd3.dat
+            REFERENCE_FUNCTIONAL PBE
+          &END PAIR_POTENTIAL
+        &END VDW_POTENTIAL
+    &END XC
+    SURFACE_DIPOLE_CORRECTION .TRUE.
+    &PRINT
+      &V_HARTREE_CUBE ON
+         STRIDE 8 8 1
+         APPEND T
+      &END V_HARTREE_CUBE
+    &END PRINT
+  &END DFT
+
+  &SUBSYS
+    &CELL
+      ABC [angstrom]   11.246 11.246 35.940   
+      ALPHA_BETA_GAMMA  90 90 90
+    &END CELL
+    &COORD
