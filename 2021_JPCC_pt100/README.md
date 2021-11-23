@@ -95,15 +95,13 @@ If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/di
 
 `cd $dir/post_analysis`
 
-#### rearrange trajectory
+#### generate trajectories for analysis
 
-`gen_traj`
+`gen_traj`: Since there is proton hopping happening in the Pt(100)/water interfaces with adsorbed OH, we cannot analyse water or OH structures directly. Instead, pre-processing about the raw AIMD trajectories is required.
 
 - `gen_traj/voronoi_polyhedra.py`: codes used for distinguish water and OH from AIMD trajectories (find definition of Voronoi polyhedra in 10.1073/pnas.1819771116)
 - `gen_traj/traj.xyz`: raw AIMD trajectories
 - `gen_traj/out.xyz`: output trajectories in the order of OHH...Pt...OH... for further analysis
-
-Since there is proton hopping happening in the Pt(100)/water interfaces with adsorbed OH, we cannot analyse water or OH structures directly. Instead, pre-processing about the raw AIMD trajectories should be taken.
 
 #### water density, orientational dipole and coverage
 
@@ -135,12 +133,12 @@ Since there is proton hopping happening in the Pt(100)/water interfaces with ads
 - `*/angle.dat`: normalised distribution of angle
 
 
-#### OH spatial distribution (heatmap)
+#### OH spatial distribution (heatmap) and top/bridge site OH ratio
 
-`oh_heapmap`
+`oh_heapmap`: codes used for data in Figure 5, Figure 6 and Figure S4 (print top site OH and bridge site OH ratio)
 
-- `oh_heapmap/ad_site.py`: codes used for data in Figure 5, Figure 6 and Figure S4 (print top site OH and bridge site OH ratio)
-- `oh_heapmap/traj.xyz`:
+- `oh_heapmap/ad_site.py`: working code
+- `oh_heapmap/traj.xyz`: input xyz trajectory
 output
 - `oh_heapmap/pos.dat`: x and y for heatmap 
 
@@ -151,17 +149,30 @@ output
 - `h-bonds/pre-process`: wrap & create a 3*3 cell (deal with the water at the boudary)
 - `h-bonds/time_ave/*`: time average for acceptor or donor 
 output
-- `h-bonds/time_ave/*/hbond.out`: 
+- `h-bonds/time_ave/*/hbond.out`: number of hydrogen bonds
 
 #### Mulliken charge
 
-`atomic_charge/grep.sh`: codes used to extract atomic charge from cp2k out  (Figure S10 and Figure S11). 
+`atomic_charge`: codes used to extract atomic charge from cp2k output (Figure S10 and Figure S11). 
+
+- `atomic_charge/run.sh`: Copy file for single snapshot to this working directory iteratively and call `atomic_charge/watorient.f90` to extract 
+- `atomic_charge/watorient.f90`: working codes
+- `atomic_charge/input.watori`:input parameters
+**output**
+- `atomic_charge/bridge_oh.dat`, `atomic_charge/top_oh.dat`, `atomic_charge/wata.dat`, `atomic_charge/pt.dat`, `atomic_charge/total.dat`: average data ('mulliken O ','mulliken H ','mulliken total ','hirshfeld O ','hirshfeld H ','hirshfeld total')
+- `atomic_charge/out-1.dat`, `atomic_charge/out-2.dat`, `atomic_charge/out-3.dat`, `atomic_charge/out-4.dat`, `atomic_charge/out-5.dat`: data at every snapshot for `atomic_charge/bridge_oh.dat`, `atomic_charge/top_oh.dat`, `atomic_charge/wata.dat`, `atomic_charge/pt.dat`, `atomic_charge/total.dat` 
+
 
 #### OH spatial and orientation distribution
 
-`oh_distribution`
+`oh_distribution`: codes used for data in Figure S13 and Figure S14
 
-Figure S13 and Figure S14
+- `oh_distribution/run.sh`: call `oh_distribution/pos.f90` and `oh_distribution/ori.f90`
+- `oh_distribution/pos.f90`: working code for OH position (Figure S13) 
+- `oh_distribution/ori.f90`: working code for OH orientation (Figure S14)
+**output**
+- `oh_distribution/*pos.dat`: data in Figure S13
+- `oh_distribution/*angle.dat`: data in Figure S14
 
 
 ### Plots
@@ -175,15 +186,11 @@ Figure S13 and Figure S14
 
 > Only Available Group-Internally
 
-0: `/data/jxzhu/edl/pt_100/446/97wat/new/`
-1: `/data/jxzhu/edl/hydroxide_51/1_OH`
-2: `/data/jxzhu/edl/hydroxide_51/2_OH/fix_sur`
-3: 
-4: `/data/jxzhu/edl/hydroxide_51/4_OH`
-
 `cd $dir/md_traj`
 
 - `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory; only available group-internally)
+- `*.xyz`: initial structures for AIMD simulations
+
 
 ### Manuscript
 
