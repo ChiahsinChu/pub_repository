@@ -1,5 +1,5 @@
 # README
-test
+
 ## DOI
 
 10.1021/acs.jpcc.1c04895
@@ -97,33 +97,44 @@ If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/di
 
 #### rearrange trajectory
 
-`gen_traj`: 
+`gen_traj`
+
+- `gen_traj/gen_traj.py`: codes used for distinguish water and OH from AIMD trajectories
+- `gen_traj/traj.xyz`: raw AIMD trajectories
+- `gen_traj/out.xyz`: output trajectories in the order of water-Pt-OH
+
+Since there is proton hopping happening in the Pt(100)/water interfaces with adsorbed OH, we cannot analyse water or OH structures directly. Instead, pre-processing about the raw AIMD trajectories should be taken.
+
 
 #### water density, orientational dipole and coverage
 
-`wat_den`: codes used for data in Figure 2 (a) and (b), and Figure 4
+`wat_den`: codes used for data in Figure 2 (a) and (b), Figure 4 and Figure S15
 
 - `wat_den/run.sh`: call `wat_den/watorient.f90` and generate required data 
 - `wat_den/watorient.f90`: main code to calculate
 - `wat_den/input.watori`: input parameters
 - `wat_den/TRAJECTORY`: xyz trajectory for analysis
+  
+**output data**
+- `wat_den/o.dat`: O density distribution (Figure 2 (a))
+- `wat_den/h.dat`: H density distribution
+- `wat_den/ori.dat`: \cos\psi distribution of water
+- `wat_den/inter.dat`: \rho * \cos\psi (orientational dipole) distribution of water (Figure 2 (b))
+- `wat_den/surf.out`: average positions of surfaces
+- `wat_den/wat_cov.dat`: coverage of water A (2.7 A) and water B (4.5 A) in Figure 4
+- `wat_den/watb_dip.dat`: water B orientational dipole in Figure S15
 
-- `wat_den/o.dat`: 
-- `wat_den/h.dat`: 
-- `wat_den/ori.dat`: 
-- `wat_den/inter.dat`: 
+#### water configuration (psi and theta)
 
+`wat_psi` and `wat_theta`: codes used for data in Figure 3, Figure S5 and Figure S9
 
-- water B orientational dipole in Figure S15
-
-#### water configuration (psi and phi)
-
-`wat_phi` and `wat_psi`: codes used for data in Figure 3 
-
-- `*/run.sh`: call `wat_den/watorient.f90` and generate required data 
-- `*/watorient.f90`: main code to calculate
+- `*/run.sh`: call `*/watorient.f90` and generate `*/angle.dat`
+- `*/watorient.f90`: code to calculate normalised distribution of angle (Here the code is for water A. If analysis of water B are required, change the IF criteria in line 209/225 (psi) and 209/235 (theta) accordingly.)
 - `*/input.watori`: input parameters
 - `*/TRAJECTORY`: xyz trajectory for analysis
+
+- `*/angle.dat`: normalised distribution of angle
+
 
 #### OH spatial distribution (heatmap)
 
@@ -160,9 +171,15 @@ Figure S14
 
 > Only Available Group-Internally
 
+0: ``
+1: `/data/jxzhu/edl/hydroxide_51/1_OH`
+2: `/data/jxzhu/edl/hydroxide_51/2_OH/fix_sur`
+3: `c`
+4: `/data/jxzhu/edl/hydroxide_51/4_OH`
+
 `cd $dir/md_traj`
 
-- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool]() for saving memory; only available group-internally)
+- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory; only available group-internally)
 
 ### Manuscript
 
@@ -177,38 +194,3 @@ Figure S14
 - `achemso-demo.bib`: bibliography (bib) for `main.tex` and `si.tex`
 - `*.pdf` other than `main.pdf` and `si.pdf`: figures in pdf
 
-
-
-** Folder data_DFT-TestsSmallCoreCuPP:
-Inputs, etc used for Table 1 and 2:
- 
-The pseudopotentials referenced in the pwscf.in files can be found in the pseudopotential directory, with the following equivalences:
-Cu_myPPs_V01.UPF -> Cu.upf
-H_myPPs_V01.UPF -> 01-H.GGA_JM.pspconvert.fhi_1s1.UPF
- 
-- for table 1 see info files in folders cohesiveEnergy and equationOfState
-Code used to fit equation of state (only available group-internally): see python script FitEquationOfState.py in subfolder equationOfState/FitEquationOfState
-- for table 2: data from dir_00059, dir_00060
- 
- 
-**Folder data_coverageTests:
-Input files for convergence tests for coverage (used in supplementary).
-See info file in folder for more information on how information was extracted from the calculations.
-The POTCAR file lies in the directory itself and was used in all subdirectories.
- 
- 
-** Folder dmc_results:
-These data where generated on cartesius (original folder name: Project_H2onCu111/runs_singePrecBlip_convThrs1E-16)
-The analysis was done on my desktop (host 14)
- 
-The pseudopotentials referenced correspond to the the followingin pps in the pseudopotential directory:
-Cu_jorg.casinoTab -> 29-Cu.GGA_MF_s17.pspconvert.fhi.casinoTab
-Cu_myPPs_V01.casinoTab -> Cu.local2.casinoTab
-H_jorg.casinoTab -> 01-H.GGA_JM.pspconvert.fhi.casinoTab
-H_myPPs_V01.casinoTab -> 01-H.GGA_JM.pspconvert.fhi.casinoTab (i.e. same as H_jorg.casinoTab)
- 
-- jobDB.data: sqlite3 database containing the specifications of the run and the final results
-- generatingPythonScripts: python scripts that can be used to automatically build the input from the database and get the results (only available group-internally)
-- analysis_04.ipynb: jupyter notebook (version of the notebook server is 4.2.2 and is running on: Python 2.7.8)
-- *.py files: contain methods needed by analysis_04.ipynb
- 
