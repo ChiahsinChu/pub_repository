@@ -99,12 +99,11 @@ If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/di
 
 `gen_traj`
 
-- `gen_traj/gen_traj.py`: codes used for distinguish water and OH from AIMD trajectories
+- `gen_traj/voronoi_polyhedra.py`: codes used for distinguish water and OH from AIMD trajectories (find definition of Voronoi polyhedra in 10.1073/pnas.1819771116)
 - `gen_traj/traj.xyz`: raw AIMD trajectories
-- `gen_traj/out.xyz`: output trajectories in the order of water-Pt-OH
+- `gen_traj/out.xyz`: output trajectories in the order of OHH...Pt...OH... for further analysis
 
 Since there is proton hopping happening in the Pt(100)/water interfaces with adsorbed OH, we cannot analyse water or OH structures directly. Instead, pre-processing about the raw AIMD trajectories should be taken.
-
 
 #### water density, orientational dipole and coverage
 
@@ -138,27 +137,32 @@ Since there is proton hopping happening in the Pt(100)/water interfaces with ads
 
 #### OH spatial distribution (heatmap)
 
-codes used for data in Figure 5 and Figure S4
+`oh_heapmap`
 
-#### OH adsorption site
-
-codes used for data in Figure 6
+- `oh_heapmap/ad_site.py`: codes used for data in Figure 5, Figure 6 and Figure S4 (print top site OH and bridge site OH ratio)
+- `oh_heapmap/traj.xyz`:
+output
+- `oh_heapmap/pos.dat`: x and y for heatmap 
 
 #### hydrogen bond analysis
 
-codes used for data in Figure 7
+`h_bonds`: codes used for data in Figure 7
+
+- `h-bonds/pre-process`: wrap & create a 3*3 cell (deal with the water at the boudary)
+- `h-bonds/time_ave/*`: time average for acceptor or donor 
+output
+- `h-bonds/time_ave/*/hbond.out`: 
 
 #### Mulliken charge
 
-codes used for data in Figure S10 and Figure S11
+`atomic_charge/grep.sh`: codes used to extract atomic charge from cp2k out  (Figure S10 and Figure S11). 
 
-#### OH orientation distribution
+#### OH spatial and orientation distribution
 
-Figure S13
+`oh_distribution`
 
-#### OH spatial distribution
+Figure S13 and Figure S14
 
-Figure S14
 
 ### Plots
 
@@ -171,10 +175,10 @@ Figure S14
 
 > Only Available Group-Internally
 
-0: ``
+0: `/data/jxzhu/edl/pt_100/446/97wat/new/`
 1: `/data/jxzhu/edl/hydroxide_51/1_OH`
 2: `/data/jxzhu/edl/hydroxide_51/2_OH/fix_sur`
-3: `c`
+3: 
 4: `/data/jxzhu/edl/hydroxide_51/4_OH`
 
 `cd $dir/md_traj`
