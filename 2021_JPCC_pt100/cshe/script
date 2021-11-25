@@ -1,0 +1,15 @@
+#!/bin/bash
+
+module load intel/15.0.6 mpi/intel/5.0.3.049
+module load cp2k/4.1
+
+NAME=pt
+
+i=0
+while [ $i -le 1000 ]
+do
+cat ./inp1 ./extraction/coords.$i ./inp2 > inp.$i
+mpiexec.hydra cp2k.popt inp.$i > out.$i
+cp $NAME-v_hartree-1_0.cube  pot-$i.cube
+i=$((i+50))
+done 
