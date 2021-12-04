@@ -12,7 +12,9 @@
 
 ## analysis
 
-### Fermi level
-
-> Fermi levels in the output file is in atomic unit (hartree)!
+```bash
+  cd ./analysis/*
+  # change the parameters in `run.sh` (and `aver.f90`)
+  ./run.sh
+```
 
