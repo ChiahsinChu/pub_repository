@@ -3,6 +3,7 @@
 # grep Fermi level from output data
 # a.u. (hartree) to eV
 grep 'Fermi energy' ../../output* > tmp.dat
+# check if the reftraj is terminated
 flag=$(grep 'SCF run terminated' ../../output* | awk '{print $2}')
 if [ $flag ]; then
     sed -i '$d' tmp.dat 

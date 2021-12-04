@@ -5,7 +5,7 @@ PROJECT="pt"
 gfortran aver.f90 -o aver.x
 
 i=1
-while [ $i -le 2001 ]
+while [ $i -le 20001 ]
 do  
     # hartree potential in one dimension
     cd ./cubecruncher
@@ -18,7 +18,7 @@ do
     cp har-$i.dat input.dat
     ./aver.x
     mv output.dat out-$i.dat
-    i=$((i+1000))
+    i=$((i+50))
 done
 
 cat out-*.dat > hartree.dat
