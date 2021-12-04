@@ -31,6 +31,7 @@ dir=$(pwd)
 > **NOTE** 
 > - There might be some alternative (and possibly simpler) methods for calculations and analysis, which are shown in `*/alternative` in the working directories `*/`.
 > - Most of the codes here are written in fortran and *ad hoc*. Some of them are reconstructed in python modules for higher transferability, which can be found in [GitHub](https://github.com/ChiahsinChu/pub_repository/tree/master/2021_JPCC_pt100).
+> - The parts with `Only Available Group-Internally` are available from the corresponding authors upon reasonable request.
 
 ### Shared files for QM calculation
 
