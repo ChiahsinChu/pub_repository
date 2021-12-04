@@ -1,0 +1,144 @@
+&FORCE_EVAL
+  METHOD Quickstep
+#  STRESS_TENSOR ANALYTICAL
+
+  &DFT
+    BASIS_SET_FILE_NAME BASIS_MOLOPT
+    POTENTIAL_FILE_NAME GTH_POTENTIALS 
+#    CHARGE 1
+#    UKS  T
+#    WFN_RESTART_FILE_NAME ./q-28w-RESTART.wfn
+    &MGRID
+      CUTOFF 1000
+#      NGRIDS 5
+    &END MGRID
+    &QS
+      EPS_DEFAULT 1.0E-13
+      EXTRAPOLATION ASPC 
+      EXTRAPOLATION_ORDER 2
+    &END QS
+    &SCF 
+      SCF_GUESS  RESTART 
+      EPS_SCF 1.0E-6 
+      MAX_SCF 500 
+      ADDED_MOS 500 
+      CHOLESKY INVERSE 
+      &SMEAR  ON 
+        METHOD FERMI_DIRAC 
+        ELECTRONIC_TEMPERATURE [K] 300 
+      &END SMEAR 
+      &DIAGONALIZATION 
+        ALGORITHM STANDARD 
+      &END DIAGONALIZATION 
+      &MIXING 
+        METHOD BROYDEN_MIXING 
+        ALPHA   0.3 
+        BETA    1.5 
+        NBROYDEN  14 
+      &END 
+      &PRINT 
+        &RESTART 
+          &EACH 
+            QS_SCF 50 
+          &END 
+          ADD_LAST NUMERIC 
+        &END 
+      &END 
+    &END SCF 
+    &XC
+      &XC_FUNCTIONAL PBE
+      &END XC_FUNCTIONAL
+        &vdW_POTENTIAL
+          DISPERSION_FUNCTIONAL PAIR_POTENTIAL
+          &PAIR_POTENTIAL
+              TYPE DFTD3
+              PARAMETER_FILE_NAME dftd3.dat
+              REFERENCE_FUNCTIONAL PBE
+          &END PAIR_POTENTIAL
+      &END vdW_POTENTIAL
+    &END XC
+    &PRINT
+      &V_HARTREE_CUBE ON
+        STRIDE 8 8 1
+#         APPEND T
+#         &EACH
+#           MD 10
+#          GEO_OPT 0
+#         &END EACH
+        ADD_LAST NUMERIC
+      &END V_HARTREE_CUBE
+    &END PRINT
+  &END DFT
+  
+  &SUBSYS
+    &CELL
+      ABC [angstrom]   11.246 11.246 35.94
+      ALPHA_BETA_GAMMA  90 90 90
+    &END CELL
+    &COORD
+        @INCLUDE ./coord.xyz
+    &END COORD
+    &KIND O
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q6
+    &END KIND
+    &KIND Pt
+      BASIS_SET  DZVP-A5-Q10-323-MOL-T1-DERIVED_SET-1
+      POTENTIAL  GTH-PBE-q10
+    &END KIND
+    &KIND H
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q1
+    &END KIND
+  &END SUBSYS
+&END FORCE_EVAL
+
+&GLOBAL
+  PROJECT  pt
+  RUN_TYPE MD 
+&END GLOBAL
+
+&MOTION
+  &MD
+    ENSEMBLE REFTRAJ
+    STEPS 200000
+    TIMESTEP 0.5
+    TEMPERATURE 330.0
+    &REFTRAJ
+      TRAJ_FILE_NAME reftraj.xyz
+      EVAL_ENERGY_FORCES .TRUE.
+      EVAL_FORCES .TRUE.
+      FIRST_SNAPSHOT 1
+      LAST_SNAPSHOT 20001 
+      STRIDE 50
+    &END REFTRAJ
+  &END MD
+  &PRINT
+    &TRAJECTORY
+      &EACH
+        MD 1
+      &END EACH
+    &END TRAJECTORY
+    &VELOCITIES
+      &EACH
+        MD 1
+      &END EACH
+    &END VELOCITIES
+    &FORCES 
+      &EACH
+        MD 1
+      &END EACH
+    &END FORCES
+    &RESTART_HISTORY
+      &EACH
+        MD 2000
+      &END EACH
+    &END RESTART_HISTORY
+    &RESTART
+      BACKUP_COPIES 3
+      &EACH
+        MD 1
+      &END EACH
+    &END RESTART
+  &END PRINT
+&END MOTION
