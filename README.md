@@ -1,5 +1,7 @@
 # README
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14190712.svg)](https://doi.org/10.5281/zenodo.14190712)
+
 ## DOI
 
 10.1021/acs.jpcc.1c04895
@@ -187,5 +189,5 @@ If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/di
 
 `cd $dir/md_traj`
 
-- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory; only on [zenodo]())
+- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory; only on [zenodo](https://zenodo.org/records/14190712))
 - `*.xyz`: initial structures for AIMD simulations
