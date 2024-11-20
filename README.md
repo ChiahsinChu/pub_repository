@@ -32,8 +32,7 @@ dir=$(pwd)
 > **NOTE**
 >
 > - There might be some alternative (and possibly simpler) methods for calculations and analysis, which are shown in `*/alternative` in the working directories `*/`.
-> - Most of the codes here are written in fortran and _ad hoc_. Some of them are reconstructed in python modules for higher transferability, which can be found in [GitHub](https://github.com/ChiahsinChu/pub_repository/tree/master/2021_JPCC_pt100).
-> - The parts with `Only Available Group-Internally` are available from the corresponding authors upon reasonable request.
+> - Most of the codes here are written in fortran and _ad hoc_. Some of them are reconstructed in python modules for higher transferability, which can be found in [GitHub](https://github.com/ChiahsinChu/2021_JPCC_Pt100-OH).
 
 ### Shared files for QM calculation
 
@@ -188,5 +187,5 @@ If calculations with unrestricted Kohn-Sham (`UKS`)/k-point grids (`KPOINTS`)/di
 
 `cd $dir/md_traj`
 
-- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory)
+- `*.bqb`: MD trajectory from AIMD simulations (compressed by [bqbtool](https://brehm-research.de/bqb) for saving memory; only on [zenodo]())
 - `*.xyz`: initial structures for AIMD simulations
